@@ -1,0 +1,11 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+  "files.exclude": {
+    "node_modules/": false,
+    "dist/": false
+  },
+  "editor.formatOnSave": true,
+  "[html]": {
+    "editor.formatOnSave": false
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "name": "koa-server",
+  "version": "1.0.0",
+  "description": "koa server with rollup/vscode",
+  "main": "dist/index.js",
+  "repository": "git@gitlab.com:quoteninja-public/koa-server.git",
+  "author": "Micah Thomas <micahthomas4@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@koa/cors": "^3.1.0",
+    "@koa/router": "^9.3.1",
+    "bluebird": "^3.7.2",
+    "config": "^3.3.1",
+    "koa": "^2.13.0",
+    "koa-bodyparser": "^4.3.0",
+    "koa-logger": "^3.2.1",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.5"
+  },
+  "scripts": {
+    "watch": "rollup -c rollup.config.js --watch",
+    "build": "rollup -c rollup.config.js"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.10.4",
+    "@babel/preset-env": "^7.10.4",
+    "import-sort-style-renke": "^6.0.0",
+    "rollup": "^2.19.0",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-inject": "^3.0.2"
+  }
+}
