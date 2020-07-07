@@ -39,18 +39,6 @@ json
 
 ## Components
 
-### Server
-
-1. Use KoaJS as server
-2. In memory storage of data entries
-3. Routes:
-
-- /product [POST] -- Create a new product
-- /product [GET] -- Get all products
-- /product/:id [GET] -- Get an existing product by ID
-- /product/:id [PUT] -- Update an existing product by ID
-- /product/:id [DELETE] -- Delete an existing product by ID
-
 ### Client
 
 1. Use React as JavaScript View Library
