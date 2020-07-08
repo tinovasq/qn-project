@@ -11,63 +11,52 @@ products.push({
   description: 'A small program that parses JSON files',
 })
 
-//   // set response
-//   ctx.body = GenerateHTMLPage(title, message)
-//   ctx.status = 200
-// })
-
-// router.get('/json/status', async (ctx) => {
-//   ctx.body = {
-//     hello: 'world',
-//     nested: {
-//       data: {
-//         here: ['testing', 'array', 'values'],
-//       },
-//     },
-//     success: true,
-//     value: 1,
-//   }
-//   ctx.status = 200
-// })
-
 router.post('/product', async (ctx) => {
-  if (ctx.params.id < products.length()) {
-    var tmp = {
-      id: ctx.params.id,
-      image_url: ctx.params.image_url,
-      name: ctx.params.name,
-      description: ctx.params.description,
+  if (products.find((p) => p.id === ctx.request.body.id) == undefined) {
+    let tmp = {
+      id: ctx.request.body.id,
+      image_url: ctx.request.body.image_url,
+      name: ctx.request.body.name,
+      description: ctx.request.body.description,
     }
-    ctx.body = products.push(tmp)
+    products.push(tmp)
     ctx.status = 201
   } else {
     ctx.status = 403
   }
 })
+
 router.get('/product', async (ctx) => {
   ctx.body = products
   ctx.status = 200
 })
-router.get('/product/:id', async (ctx) => {
-  ctx.body = products.find((p) => p.id === ctx.params.id)
-  ctx.status = 200
-})
-router.put('/product/:id', async (ctx) => {
-  var target = products.find((p) => p.id === ctx.params.id)
+
+router.get('/product/:id', async (ctx, id) => {
+  let target = products.find((p) => p.id == ctx.params.id)
   if (target != null) {
-    target.id = ctx.params.id
-    target.image_url = ctx.params.image_url
-    target.name = ctx.params.name
-    target.description = ctx.params.description
+    ctx.body = target
+    ctx.status = 200
+  } else {
+    ctx.status = 404
+  }
+})
+
+router.put('/product/:id', async (ctx) => {
+  var target = products.find((p) => p.id == ctx.params.id)
+  if (target != null) {
+    target.id = ctx.request.body.id
+    target.image_url = ctx.request.body.image_url
+    target.name = ctx.request.body.name
+    target.description = ctx.request.body.description
     ctx.status = 201
   } else {
     ctx.status = 404
   }
 })
+
 router.delete('/product/:id', async (ctx) => {
-  var target = products.find((p) => p.id === ctx.params.id)
-  const ind = products.indexOf(target)
-  if (target != null) {
+  const ind = products.findIndex((p) => p.id == ctx.params.id)
+  if (products.length > ind) {
     products.splice(ind, 1)
     ctx.status = 205
   } else {
