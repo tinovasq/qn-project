@@ -1,12 +1,15 @@
 // import { GenerateHTMLPage } from './logic'
 import Router from '@koa/router'
 
-var products = require('../data/products.json')
 const router = new Router()
 
-// router.get('/html/:title/:message', async (ctx) => {
-//   // get query params
-//   const { title, message } = ctx.params
+var products = new Array()
+products.push({
+  id: 1,
+  image_url: '',
+  name: 'JSON file parser',
+  description: 'A small program that parses JSON files',
+})
 
 //   // set response
 //   ctx.body = GenerateHTMLPage(title, message)
