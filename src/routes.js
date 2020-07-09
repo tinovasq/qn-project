@@ -4,12 +4,12 @@ import Router from '@koa/router'
 const router = new Router()
 
 var products = new Array()
-products.push({
-  id: 1,
-  image_url: '',
-  name: 'JSON file parser',
-  description: 'A small program that parses JSON files',
-})
+// products.push({
+//   id: 1,
+//   image_url: '',
+//   name: 'JSON file parser',
+//   description: 'A small program that parses JSON files',
+// })
 
 router.post('/product', async (ctx) => {
   if (products.find((p) => p.id === ctx.request.body.id) == undefined) {
