@@ -1,20 +1,20 @@
-import React, { Component } from 'react'
-
 import Product from './Product'
+import React from 'react'
 import map from 'lodash/map'
 
-class ProductList extends Component {
-  render() {
-    return map(this.props.products, (product) => (
-      <Product
-        key={product.id}
-        product={product}
-        deleteProduct={this.props.deleteProduct}
-        editProduct={this.props.editProduct}
-        openProductDialog={this.props.openProductDialog}
-      />
-    ))
-  }
+export default function ProductList({
+  deleteProduct,
+  editProduct,
+  openProductDialog,
+  products,
+}) {
+  return map(products, (product) => (
+    <Product
+      key={product.id}
+      product={product}
+      deleteProduct={deleteProduct}
+      editProduct={editProduct}
+      openProductDialog={openProductDialog}
+    />
+  ))
 }
-
-export default ProductList
