@@ -21,7 +21,7 @@ var products = {
 }
 
 router.post('/product', async (ctx) => {
-  const newProductID = Object.keys(products).length
+  const newProductID = Object.keys(products).length + 1
   let tmp = {
     id: newProductID,
     image_url: ctx.request.body.image_url,
