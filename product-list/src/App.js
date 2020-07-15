@@ -2,52 +2,67 @@ import './App.css'
 
 import React, { Component } from 'react'
 
+import EditProduct from './components/EditProduct'
 import ProductList from './components/ProductList'
 import axios from 'axios'
+import omit from 'lodash/omit'
 
-const rootURL = 'http://localhost:8080/product/'
+const rootURL = 'http://localhost:8080/product'
 
 class App extends Component {
   state = {
-    products: [
-      {
-        id: 1,
-        image_url:
-          'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.stack.imgur.com%2FleXdp.jpg%3Fs%3D32%26g%3D1&f=1&nofb=1',
-        name: 'test item',
-        description: 'an item for testing',
-      },
-      {
-        id: 2,
-        image_url:
-          'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.stack.imgur.com%2FleXdp.jpg%3Fs%3D32%26g%3D1&f=1&nofb=1',
-        name: 'test item REDUX',
-        description: 'an item for testing with integrated RGB',
-      },
-    ],
+    products: {},
+    current_product: null,
   }
 
-  editProduct = (id, image_url, name, description) => {
+  editProduct = (field, value) => {
     this.setState({
-      products: this.state.products.map((product) => {
-        if (product.id === id) {
-          product.image_url = image_url
-          product.name = name
-          product.description = description
-        }
-        return product
-      }),
+      ...this.state,
+      current_product: { ...this.state.current_product, [field]: value },
     })
   }
 
-  deleteProduct = (id) => {
-    axios.delete(rootURL + id.toString()).then((response) => {
-      if (response.status === 205) {
-        this.setState({
-          products: [...this.state.products.filter((p) => p.id !== id)],
-        })
-      }
+  openProductDialog = (id) => {
+    this.setState({
+      ...this.state,
+      current_product: this.state.products[id],
     })
+  }
+
+  closeProductDialog = () => {
+    this.setState({
+      ...this.state,
+      current_product: null,
+    })
+  }
+
+  saveProduct = async () => {
+    const product = this.state.current_product
+    await axios.put(`${rootURL}/${product.id}`, product)
+    this.setState({ ...this.state, current_product: null })
+    await this.fetchProducts()
+  }
+
+  deleteProduct = async (id) => {
+    const response = await axios.delete(`${rootURL}/${id}`)
+    if (response.status === 205) {
+      this.setState({
+        ...this.state,
+        products: omit(this.state.products, id),
+      })
+    }
+  }
+
+  fetchProducts = async () => {
+    const response = await axios.get(rootURL)
+    this.setState({
+      ...this.state,
+      products: response.data,
+    })
+  }
+
+  componentWillMount() {
+    this.fetchProducts()
   }
 
   render() {
@@ -57,6 +72,13 @@ class App extends Component {
           products={this.state.products}
           editProduct={this.editProduct}
           deleteProduct={this.deleteProduct}
+          openProductDialog={this.openProductDialog}
+        />
+        <EditProduct
+          product={this.state.current_product}
+          editProduct={this.editProduct}
+          saveProduct={this.saveProduct}
+          closeProductDialog={this.closeProductDialog}
         />
       </div>
     )

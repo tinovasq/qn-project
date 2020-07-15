@@ -1,23 +1,20 @@
 import React, { Component } from 'react'
 
 import Product from './Product'
-import PropTypes from 'prop-types'
+import map from 'lodash/map'
 
 class ProductList extends Component {
   render() {
-    return this.props.products.map((product) => (
+    return map(this.props.products, (product) => (
       <Product
         key={product.id}
         product={product}
         deleteProduct={this.props.deleteProduct}
         editProduct={this.props.editProduct}
+        openProductDialog={this.props.openProductDialog}
       />
     ))
   }
-}
-
-ProductList.propTypes = {
-  products: PropTypes.array.isRequired,
 }
 
 export default ProductList

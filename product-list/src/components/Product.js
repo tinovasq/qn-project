@@ -1,55 +1,57 @@
-import React, { Component } from 'react'
+import Button from '@material-ui/core/Button'
+import Card from '@material-ui/core/Card'
+import CardActionArea from '@material-ui/core/CardActionArea'
+import CardActions from '@material-ui/core/CardActions'
+import CardContent from '@material-ui/core/CardContent'
+import CardMedia from '@material-ui/core/CardMedia'
+import React from 'react'
+import Typography from '@material-ui/core/Typography'
+import { makeStyles } from '@material-ui/core/styles'
 
-import PropTypes from 'prop-types'
+const useStyles = makeStyles({
+  root: {
+    maxWidth: 345,
+  },
+  media: {
+    height: 140,
+  },
+})
 
-class Product extends Component {
-  render() {
-    const { id, image_url, name, description } = this.props.product
-    return (
-      <div
-        style={{
-          background: '#f4f4f4',
-          padding: '20px',
-          borderBottom: '1px #CCC solid',
-          textDecoration: 'none',
-          align: 'center',
-        }}
-      >
-        <img
-          style={{ display: 'inline-block' }}
-          src={image_url}
-          width="60"
-          alt="Product"
-        />
-        <div style={{ marginLeft: '15px', display: 'inline-block' }}>
-          <h1>{name}</h1>
-          <p>{description}</p>
-        </div>
-        <div style={{ display: 'inline-block', marginLeft: '20px' }}>
-          <button
-            onClick={this.props.editProduct.bind(
-              this,
-              id,
-              image_url,
-              name + ' (edited)',
-              description
-            )}
-            style={{ marginBottom: '10px' }}
-          >
-            Edit
-          </button>
-          <br />
-          <button onClick={this.props.deleteProduct.bind(this, id)}>
-            Delete
-          </button>
-        </div>
-      </div>
-    )
-  }
+export default function Product({ product, openProductDialog, deleteProduct }) {
+  const { id, image_url, name, description } = product
+  const classes = useStyles()
+
+  return (
+    <Card className={classes.root}>
+      <CardActionArea>
+        <CardMedia className={classes.media} image={image_url} title={name} />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="h2">
+            {name}
+          </Typography>
+          <Typography variant="body2" color="textSecondary" component="p">
+            {description}
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+      <CardActions>
+        <Button
+          size="small"
+          color="primary"
+          onClick={() => openProductDialog(id)}
+          variant="contained"
+        >
+          Edit
+        </Button>
+        <Button
+          size="small"
+          color="secondary"
+          onClick={() => deleteProduct(id)}
+          variant="contained"
+        >
+          Delete
+        </Button>
+      </CardActions>
+    </Card>
+  )
 }
-
-Product.propTypes = {
-  products: PropTypes.object.isRequired,
-}
-
-export default Product
