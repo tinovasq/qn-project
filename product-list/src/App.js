@@ -19,13 +19,17 @@ class App extends Component {
 
   newProduct = () => {
     const newProductID = Object.keys(this.state.products).length + 1
-    const newProd = {
+    let newProduct = {}
+    newProduct[newProductID] = {
       id: newProductID,
       image_url: 'https://via.placeholder.com/350x150',
       name: 'New Product',
       description: 'New Product',
     }
-    this.setState((this.state.products[newProductID] = newProd))
+    this.setState({
+      ...this.state,
+      products: assign(this.state.products, newProduct),
+    })
     this.postProduct(newProductID)
     this.openProductDialog(newProductID)
   }
