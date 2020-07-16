@@ -4,6 +4,8 @@ import React, { Component } from 'react'
 
 import EditProduct from './components/EditProduct'
 import ProductList from './components/ProductList'
+import TitleBar from './components/TitleBar'
+import assign from 'lodash/assign'
 import axios from 'axios'
 import omit from 'lodash/omit'
 
@@ -13,6 +15,25 @@ class App extends Component {
   state = {
     products: {},
     current_product: null,
+  }
+
+  newProduct = () => {
+    const newProductID = Object.keys(this.state.products).length + 1
+    const newProd = {
+      id: newProductID,
+      image_url: 'https://via.placeholder.com/350x150',
+      name: 'New Product',
+      description: 'New Product',
+    }
+    this.setState((this.state.products[newProductID] = newProd))
+    this.postProduct(newProductID)
+    this.openProductDialog(newProductID)
+  }
+
+  postProduct = async (id) => {
+    const product = this.state.products[id]
+    await axios.post(rootURL, product)
+    await this.fetchProducts()
   }
 
   editProduct = (field, value) => {
@@ -68,6 +89,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+        <TitleBar newProduct={this.newProduct} />
         <ProductList
           products={this.state.products}
           editProduct={this.editProduct}
